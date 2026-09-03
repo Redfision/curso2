@@ -6,5 +6,20 @@
     </span>
     <h2 class="text-xl font-semibold text-gray-900">{{ $post->titulo }}</h2>
     <p class="text-gray-600 mt-2">{{ Str::limit($post->contenido, 90) }}</p>
-    <p class="text-gray-400 text-xs mt-4">{{ $post->fecha }}</p>
+    <p class="text-gray-400 text-xs mt-4">{{ $post->created_at->format('d/m/Y') }}</p>
+
+    <div class="mt-4 flex gap-4 items-center">
+        @can('update', $post)
+            <a href="{{ route('avisos.edit', $post) }}" class="text-blue-700 text-sm font-semibold hover:underline">Editar</a>
+        @endcan
+
+        @can('delete', $post)
+            <form method="POST" action="{{ route('avisos.destroy', $post) }}" class="inline"
+                  onsubmit="return confirm('¿Borrar este aviso?')">
+                @csrf
+                @method('DELETE')
+                <button class="text-red-600 text-sm font-semibold hover:underline">Borrar</button>
+            </form>
+        @endcan
+    </div>
 </article>
